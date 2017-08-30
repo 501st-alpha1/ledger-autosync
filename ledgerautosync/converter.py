@@ -158,7 +158,7 @@ class Posting(object):
         self.metadata = metadata
 
     def format(self, indent=4, assertions=True):
-        space_count = 65 - indent - \
+        space_count = 80 - indent - \
             len(self.account) - len(self.amount.format())
         if space_count < 2:
             space_count = 2
