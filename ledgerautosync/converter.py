@@ -206,7 +206,7 @@ class Amount(EasyEquality):
             prefix = ""
         if len(currency) == 1:
             # $ comes before
-            return "%s%s%s" % (prefix, currency, number)
+            return "%s%s%s" % (currency, prefix, number)
         else:
             # USD comes after
             return "%s%s %s" % (prefix, number, currency)
