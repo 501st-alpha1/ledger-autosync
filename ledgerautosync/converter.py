@@ -172,7 +172,7 @@ class Posting(object):
             retval = "%s @ %s" % (retval, self.unit_price.format())
         retval += "\n"
         for k in sorted(self.metadata.keys()):
-            retval += "%s; %s: %s\n" % (" " * indent, k, self.metadata[k])
+            retval += "%s;; %s: %s\n" % (" " * indent, k, self.metadata[k])
         return retval
 
     def clone_inverted(self, account, asserted=None, metadata={}):
