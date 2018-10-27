@@ -134,12 +134,12 @@ class Transaction(object):
             self.date_format = "%Y/%m/%d"
         if self.aux_date is not None:
             aux_date_str = "=%s" % (self.aux_date.strftime(self.date_format))
-        retval += "%s%s%s%s\n" % (self.date.strftime(self.date_format),
+        retval += "%s%s%s%s" % (self.date.strftime(self.date_format),
                                   aux_date_str, cleared_str, self.payee)
         for k in sorted(self.metadata.keys()):
-            retval += "%s; %s: %s\n" % (" " * indent, k, self.metadata[k])
+            retval += "\n%s; %s: %s" % (" " * indent, k, self.metadata[k])
         for posting in self.postings:
-            retval += posting.format(indent, assertions)
+            retval += "\n%s" % (posting.format(indent, assertions))
         return retval
 
 
@@ -170,9 +170,8 @@ class Posting(object):
             retval = "%s = %s" % (retval, self.asserted.format())
         if self.unit_price is not None:
             retval = "%s @ %s" % (retval, self.unit_price.format())
-        retval += "\n"
         for k in sorted(self.metadata.keys()):
-            retval += "%s;; %s: %s\n" % (" " * indent, k, self.metadata[k])
+            retval += "\n%s;; %s: %s" % (" " * indent, k, self.metadata[k])
         return retval
 
     def clone_inverted(self, account, asserted=None, metadata={}):
