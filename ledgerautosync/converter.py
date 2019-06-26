@@ -299,12 +299,24 @@ class OfxConverter(Converter):
                 self.fid = account.institution.fid
         self.name = name
 
+    def is_date(self, string):
+        from time import strptime
+        try:
+            strptime(string, "%Y%m%d")
+            return True
+        except ValueError:
+            return False
+
     def mk_ofxid(self, txnid):
         if self.acctid != self.real_acctid:
             # Some banks insert the bank account number into the transaction ID
             # We will do this to properly hide the account number for privacy
             # reasons
             txnid = txnid.replace(self.real_acctid, self.acctid)
+        #201904173930
+        #first 8 chars date, last 4 actual id
+        if (len(txnid) > 8) and self.is_date(txnid[0:8]):
+            txnid = txnid[8:]
         return Converter.clean_id("%s.%s.%s" % (self.fid, self.acctid, txnid))
 
     def format_payee(self, txn):

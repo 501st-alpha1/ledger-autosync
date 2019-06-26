@@ -41,6 +41,14 @@ class OfxSynchronizer(Synchronizer):
         with open(path, 'rb') as ofx_file:
             return OfxParser.parse(ofx_file)
 
+    def is_date(self, string):
+        from time import strptime
+        try:
+            strptime(string, "%Y%m%d")
+            return True
+        except ValueError:
+            return False
+
     def is_txn_synced(self, acctid, txn):
         if self.lgr is None:
             # User called with --no-ledger
@@ -55,6 +63,10 @@ class OfxSynchronizer(Synchronizer):
             elif self.shortenaccount:
                 acctid_to_use = acctid[-4:]
                 txnid_to_use = txnid_to_use.replace(acctid, acctid_to_use)
+            #201904173930
+            #first 8 chars date, last 4 actual id
+            if (len(txnid_to_use) > 8) and self.is_date(txnid_to_use[0:8]):
+                txnid_to_use = txnid_to_use[8:]
             ofxid = "%s.%s" % (acctid_to_use, txnid_to_use)
             return self.lgr.check_transaction_by_id("ofxid", ofxid)
 
